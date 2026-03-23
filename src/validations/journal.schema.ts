@@ -1,0 +1,1 @@
+// currentBalance = Positive? Next step : throw error

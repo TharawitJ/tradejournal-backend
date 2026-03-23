@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  userId         Int       @id @default(autoincrement())
+  username       String?   @unique
+  email          String?   @unique
+  hashPassword   String?
+  startFund      Float
+  yourModel      String
+  addFund        Float
+  journalRecords JournalRecord[]
+  entryModels    EntryModel[] 
+}
+
+model EntryModel {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [userId])
+  journals  JournalRecord[]
+  @@unique([name, userId])
+}
+// use entryId as a model represent
+// @@unique([name, userId]) --> Prevent Duplicates eg. userId = 1, name = "ICT FVG" and userId = 1, name = "ICT FVG" --> X
+
+
+model Asset {
+  assetId        Int       @id @default(autoincrement())
+  assetName      String    @unique
+  journalRecords JournalRecord[]
+}
+
+model JournalRecord {
+  recordId       Int       @id @default(autoincrement())
+  userId         Int
+  assetId        Int
+  entryModelId   Int
+  user           User      @relation(fields: [userId], references: [userId])
+  asset          Asset     @relation(fields: [assetId], references: [assetId])
+  entryModel     EntryModel @relation(fields: [entryModelId], references: [id])
+  setUpTier      SetUpTier
+  entryDateTime  DateTime?
+  exitDateTime   DateTime
+  entryPrice     Float
+  SL             Float
+  TP             Float
+  advantage      String?
+  disadvantage   String?
+  notes          String
+  feedback       String
+  imageUrl       String?
+  winLose        WinLoseType
+  profit         Float?
+  currentBalance Float?
+  duration       Int
+}
+
+enum SetUpTier {
+  A
+  B
+  C
+  D
+  E
+  F
+}
+
+enum WinLoseType {
+  WIN
+  LOSE
+}
