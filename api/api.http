@@ -1,0 +1,24 @@
+@BASE_URL=http://localhost:3500
+
+
+###
+GET {{BASE_URL}}
+### Login
+POST {{BASE_URL}}/login
+Content-Type: application/json
+
+{
+    "identity": "test18@yahoo.com",
+    "password": "$2b$08$X3LJnTgIBqCnEFTcAOmsQ.goz2vJe01b5OIdkwzS9KTv9raSF/NQi"
+}
+
+### Register
+POST {{BASE_URL}}/register
+Content-Type: application/json
+
+{    
+    "username":"test21551",
+    "email":"tes258@yahoo.com",
+    "password":"te225511",
+    "passwordConfirm":"te225511"
+}

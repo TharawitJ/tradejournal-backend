@@ -1,6 +1,3 @@
-// - startFund? Next step : Require startFund
-// - DupTradeModel? store data : throw error --> .trim().toLowerCase() then check
-
 import { z } from "zod";
 import bcrypt from "bcrypt";
 
@@ -11,14 +8,14 @@ const identityKey = (val: any) => (emailRegex.test(val) ? "email" : "username");
 
 export const registerSchema = z
   .object({
-    email: z
+    identity: z
       .string()
       .min(2, "Must have more than 2 characters")
       .refine(
-        (val: any) => emailRegex.test(val),
-        "Email are require",
+        (val: any) => emailRegex.test(val) || usernameRegex.test(val),
+        "Email and mobile are require",
       ),
-    username: z.string().min(2, "Username is require").refine((val:any)=>(usernameRegex.test(val))),
+    username: z.string().min(2, "Username is require"),
     password: z.string().min(4, "Password must have more than 4 characters"),
     passwordConfirm: z.string().min(1, "Confirm password"),
   })
@@ -32,7 +29,7 @@ export const registerSchema = z
     },
   )
   .transform(async (data) => ({
-    email: data.email,
+    [identityKey(data.identity)]: data.identity,
     password: await bcrypt.hash(data.password, 8),
     username: data.username,
   }));

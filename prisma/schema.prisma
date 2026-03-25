@@ -14,12 +14,12 @@ datasource db {
 
 model User {
   userId         Int       @id @default(autoincrement())
-  username       String?   @unique
-  email          String?   @unique
-  hashPassword   String?
-  startFund      Float
-  yourModel      String
-  addFund        Float
+  username       String   @unique
+  email          String   @unique
+  hashPassword   String
+  startFund      Float?
+  yourModel      String?
+  addFund        Float?
   journalRecords JournalRecord[]
   entryModels    EntryModel[] 
 }
@@ -51,19 +51,19 @@ model JournalRecord {
   asset          Asset     @relation(fields: [assetId], references: [assetId])
   entryModel     EntryModel @relation(fields: [entryModelId], references: [id])
   setUpTier      SetUpTier
-  entryDateTime  DateTime?
-  exitDateTime   DateTime
-  entryPrice     Float
-  SL             Float
-  TP             Float
-  advantage      String?
-  disadvantage   String?
+  entryDateTime  DateTime
+  exitDateTime   DateTime?
+  entryPrice     Float?
+  SL             Float?
+  TP             Float?
+  advantage      String
+  disadvantage   String
   notes          String
   feedback       String
-  imageUrl       String?
+  imageUrl       String
   winLose        WinLoseType
-  profit         Float?
-  currentBalance Float?
+  profit         Float
+  currentBalance Float
   duration       Int
 }
 
