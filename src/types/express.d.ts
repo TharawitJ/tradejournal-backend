@@ -1,6 +1,6 @@
 import { JournalRecord, EntryModel } from '@prisma/client';
 
-export interface User {
+interface User {
   userId: number;
   username: string | null;
   email: string | null;
@@ -10,4 +10,12 @@ export interface User {
   addFund: number;
   journalRecords?: JournalRecord[];
   entryModels?: EntryModel[];
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User;
+    }
+  }
 }

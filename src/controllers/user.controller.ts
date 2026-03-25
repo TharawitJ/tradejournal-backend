@@ -1,4 +1,4 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler, Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import createHttpError from "http-errors";
@@ -27,7 +27,7 @@ export const register: RequestHandler = async (req, res, next) => {
 
   //   if error data.identity has been strip by zod
   const userData = {
-    id: newUser.id,
+    id: newUser.userId,
     email: data.email,
     username: newUser.username,
   };
@@ -38,7 +38,7 @@ export const login: RequestHandler = async (req, res, next) => {
   const data = loginSchema.parse(req.body);
   const identityKey = data.email? "email" : "username";
   // find login user
-  const foundUser = await getUserBy(identityKey, data[identityKey]);
+  const foundUser = await getUserBy(identityKey, data[identityKey as keyof typeof data]);
   if (!foundUser) {
     return next(createHttpError[401]("Invalid user login 1"));
   }
@@ -50,7 +50,7 @@ export const login: RequestHandler = async (req, res, next) => {
   // let pwCheck = await bcrypt.compare(data.password, foundUser.hashPassword)
   // if (!pwCheck){    return next(createHttpError[401]("Invalid user login 2"))}
   // create token
-  const payload = { id: foundUser.id };
+  const payload = { id: foundUser.userId };
   const token = jwt.sign(payload, process.env.JWT_SECRET!, {
     algorithm: "HS256",
     expiresIn: "1d",
@@ -64,7 +64,7 @@ export const login: RequestHandler = async (req, res, next) => {
   });
 };
 
-export const getMe: RequestHandler = async (req, res, next) => {
+export const getMe: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   console.log("in get me page", req.user);
   res.json({ user: req.user });
 };
