@@ -13,43 +13,52 @@ datasource db {
 }
 
 model User {
-  userId         Int       @id @default(autoincrement())
-  username       String   @unique
-  email          String   @unique
+  userId         Int             @id @default(autoincrement())
+  username       String          @unique
+  email          String          @unique
   hashPassword   String
   startFund      Float?
   yourModel      String?
   addFund        Float?
   journalRecords JournalRecord[]
-  entryModels    EntryModel[] 
+  entryModels    EntryModel[]
+  fundHistory    FundHistory[]
+}
+
+model FundHistory {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @default(now())
+  user       User?    @relation(fields: [userUserId], references: [userId])
+  userUserId Int?
 }
 
 model EntryModel {
-  id        Int      @id @default(autoincrement())
-  name      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [userId])
-  journals  JournalRecord[]
+  id       Int             @id @default(autoincrement())
+  name     String
+  userId   Int
+  user     User            @relation(fields: [userId], references: [userId])
+  journals JournalRecord[]
+
   @@unique([name, userId])
 }
+
 // use entryId as a model represent
 // @@unique([name, userId]) --> Prevent Duplicates eg. userId = 1, name = "ICT FVG" and userId = 1, name = "ICT FVG" --> X
 
-
 model Asset {
-  assetId        Int       @id @default(autoincrement())
-  assetName      String    @unique
+  assetId        Int             @id @default(autoincrement())
+  assetName      String          @unique
   journalRecords JournalRecord[]
 }
 
 model JournalRecord {
-  recordId       Int       @id @default(autoincrement())
+  recordId       Int         @id @default(autoincrement())
   userId         Int
   assetId        Int
   entryModelId   Int
-  user           User      @relation(fields: [userId], references: [userId])
-  asset          Asset     @relation(fields: [assetId], references: [assetId])
-  entryModel     EntryModel @relation(fields: [entryModelId], references: [id])
+  user           User        @relation(fields: [userId], references: [userId])
+  asset          Asset       @relation(fields: [assetId], references: [assetId])
+  entryModel     EntryModel  @relation(fields: [entryModelId], references: [id])
   setUpTier      SetUpTier
   entryDateTime  DateTime
   exitDateTime   DateTime?

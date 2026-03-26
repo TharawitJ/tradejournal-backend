@@ -1,5 +1,5 @@
 @BASE_URL=http://localhost:3500
-
+@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzc0NTQ2OTU2LCJleHAiOjE3NzQ2MzMzNTZ9.-gwQjLhwx9ZVfZMpKmCV8wmbARrDq67FVrPcq1hM0Yg
 
 ###
 GET {{BASE_URL}}
@@ -17,8 +17,27 @@ POST {{BASE_URL}}/register
 Content-Type: application/json
 
 {    
-    "username":"test21551",
-    "email":"tes258@yahoo.com",
+    "username":"test999",
+    "email":"tes29958@yahoo.com",
     "password":"te225511",
     "passwordConfirm":"te225511"
 }
+
+### GET
+GET {{BASE_URL}}/user/profile
+Authorization: Bearer {{Token}}
+
+### PATCH
+PATCH {{BASE_URL}}/user/profile
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{"email":"New2_Dianne_Orn98@yahoo.com"}
+
+
+### DELETE
+DELETE {{BASE_URL}}/user/profile
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{"email":"New2_Dianne_Orn98@yahoo.com"}

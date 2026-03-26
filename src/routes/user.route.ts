@@ -1,9 +1,12 @@
 import express from "express";
-import {login,register} from "../controllers/user.controller";
+import {getMe,patchMe,deleteMe} from "../controllers/user.controller";
+import {authenticate} from '../middlewares/auth.middleware'
+
 const router = express.Router()
 
-router.post('/login',login)
-router.post('/register',register)
-// router.post('/recovery_account',)
+router.get('/profile',authenticate,getMe)
+router.patch('/profile',authenticate,patchMe)
+router.delete('/profile',authenticate,deleteMe)
+
 
 export default router

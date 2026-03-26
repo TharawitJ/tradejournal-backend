@@ -8,3 +8,21 @@ export async function getUserBy(field:any, value:any) {
 export async function createUser(data:any){
     return await prisma.user.create({data:data})
 }
+
+export async function updateUser(userId,data){
+    const updatedUser = await prisma.user.update({
+      where: { userId:userId },
+      data: {
+        ...(data.username && { username: data.username }),
+        ...(data.email && { email: data.email }),
+      },
+    });
+    return updatedUser
+  }
+
+  
+export async function deleteUser(userId){
+    const deletedUser = await prisma.user.delete({
+      where: { userId:userId },});
+    return deletedUser
+  }
