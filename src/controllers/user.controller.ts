@@ -4,7 +4,6 @@ import { getUserBy,updateUser,deleteUser } from "../services/user.service";
 
 export const getMe: RequestHandler = async (req, res, next) => {
   const userId = req.user?.userId
-  console.log(userId)
   const userFound = getUserBy("userId",userId)
         if (!userFound) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -18,7 +17,6 @@ export const patchMe: RequestHandler = async (req, res, next) => {
       if (!userFound) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    // data to update
     const updatedUser = await updateUser(userId,req.body)
   res.json({message: "Update successfully"});
 };

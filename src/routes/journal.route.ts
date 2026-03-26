@@ -1,12 +1,12 @@
 import express from 'express'
+import {getUserJournal,recordTheJournal,editTheJournal,deleteTheJournal} from "../controllers/journal.controller"
+import { authenticate } from '../middlewares/auth.middleware'
 
 const router = express.Router()
 
-router.get("/",(req,res,next)=>(
-    console.log(req.body),
-    res.send(req.body)))
-// router.post("/record",)
-// router.patch("/edit",)
-// router.delete("/",)
+router.get("/",authenticate,getUserJournal)
+router.post("/",authenticate,recordTheJournal)
+router.patch("/:recordId",authenticate,editTheJournal)
+router.delete("/:recordId",authenticate,deleteTheJournal)
 
  export default router

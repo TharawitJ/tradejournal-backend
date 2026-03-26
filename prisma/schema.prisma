@@ -60,20 +60,20 @@ model JournalRecord {
   asset          Asset       @relation(fields: [assetId], references: [assetId])
   entryModel     EntryModel  @relation(fields: [entryModelId], references: [id])
   setUpTier      SetUpTier
-  entryDateTime  DateTime
+  entryDateTime  DateTime?  @default(now())
   exitDateTime   DateTime?
   entryPrice     Float?
   SL             Float?
   TP             Float?
-  advantage      String
-  disadvantage   String
-  notes          String
-  feedback       String
-  imageUrl       String
-  winLose        WinLoseType
-  profit         Float
-  currentBalance Float
-  duration       Int
+  advantage      String?
+  disadvantage   String?
+  notes          String?
+  feedback       String?
+  imageUrl       String?
+  winLose        WinLoseType?
+  profit         Float?
+  currentBalance Float?
+  duration       Int?
 }
 
 enum SetUpTier {
