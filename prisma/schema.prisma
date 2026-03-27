@@ -28,6 +28,7 @@ model User {
 model FundHistory {
   id         Int      @id @default(autoincrement())
   date       DateTime @default(now())
+  amouth     Float?
   user       User?    @relation(fields: [userUserId], references: [userId])
   userUserId Int?
 }
@@ -52,19 +53,19 @@ model Asset {
 }
 
 model JournalRecord {
-  recordId       Int         @id @default(autoincrement())
+  recordId       Int          @id @default(autoincrement())
   userId         Int
   assetId        Int
   entryModelId   Int
-  user           User        @relation(fields: [userId], references: [userId])
-  asset          Asset       @relation(fields: [assetId], references: [assetId])
-  entryModel     EntryModel  @relation(fields: [entryModelId], references: [id])
+  user           User         @relation(fields: [userId], references: [userId])
+  asset          Asset        @relation(fields: [assetId], references: [assetId])
+  entryModel     EntryModel   @relation(fields: [entryModelId], references: [id])
   setUpTier      SetUpTier
-  entryDateTime  DateTime?  @default(now())
+  entryDateTime  DateTime?    @default(now())
   exitDateTime   DateTime?
-  entryPrice     Float?
-  SL             Float?
-  TP             Float?
+  entryPrice     Float
+  SL             Float
+  TP             Float
   advantage      String?
   disadvantage   String?
   notes          String?
@@ -74,6 +75,9 @@ model JournalRecord {
   profit         Float?
   currentBalance Float?
   duration       Int?
+  margin         Float
+  positionPnL    Float?
+  riskPerTrade   Float
 }
 
 enum SetUpTier {

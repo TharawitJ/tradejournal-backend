@@ -1,10 +1,10 @@
 import { prisma } from "../libs/prisma";
 
-export async function getJournalById(id: number) {
+export async function getJournalById(field:string,id: number) {
   const data = await prisma.journalRecord.findMany({
-    where: { userId: id },
+    where: { [field]: id },
   });
-  return data.map((item) => item.recordId);
+  return data;
 }
 
 // write userId at frontend

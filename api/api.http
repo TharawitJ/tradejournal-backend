@@ -1,5 +1,5 @@
 @BASE_URL=http://localhost:3500
-@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc0NTYxNjYzLCJleHAiOjE3NzQ2NDgwNjN9.-EcTx8XTyi1fCdi754FwKSbgQu6YEfT3qPZM9gHX-zo
+@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc0NjQwNzk4LCJleHAiOjE3NzQ3MjcxOTh9.vk88E_ylhBAuOIgJWaPc9R8V1q6qW9JW4QOL9Rm9zww
 
 ###
 GET {{BASE_URL}}
@@ -8,8 +8,8 @@ POST {{BASE_URL}}/login
 Content-Type: application/json
 
 {
-    "identity": "New2_Dianne_Orn98@yahoo.com",
-    "password": "TZUBDS28qClNiE2"
+    "identity": "Melvin_Walter16@gmail.com",
+    "password": "UtPFgksyi84MO4l"
 }
 
 ### Register
@@ -32,7 +32,7 @@ PATCH {{BASE_URL}}/user/profile
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
-{"email":"New2_Dianne_Orn98@yahoo.com"}
+{"email":"user_patch@yahoo.com"}
 
 
 ### DELETE
@@ -48,7 +48,7 @@ Content-Type: application/json
 Authorization: Bearer {{Token}}
 
 
-### GET journal
+### POST journal
 POST {{BASE_URL}}/journal
 Content-Type: application/json
 Authorization: Bearer {{Token}}
@@ -59,16 +59,18 @@ Authorization: Bearer {{Token}}
       "entryModelId": 3,
       "setUpTier": "A",
       "entryPrice": 42129.75,
+      "margin": 123,
       "SL": 41718.4525,
       "TP": 44186.2375,
       "advantage": "Delicate depraedor dedecor doloribus arx ipsa aufero suppono dolores arcus.",
       "disadvantage": "Desolo tactus ultra careo expedita trepide.",
       "notes": "Vomica acquiro fugiat debilito communis beatae deludo baiulus vomito vicissitudo. Delectatio virtus valeo celer viduo coepi abundans enim. Labore cito totus terreo comptus advoco tyrannus.",
-      "feedback": "Provident caterva natus centum sub."
+      "feedback": "Provident caterva natus centum sub.",
+      "riskPerTrade":12
     }
 
 ### PATCH
-PATCH {{BASE_URL}}/journal/33
+PATCH {{BASE_URL}}/journal/17
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
@@ -79,12 +81,31 @@ Authorization: Bearer {{Token}}
       "SL": 5555.4525,
       "TP": 4555.2375,
       "advantage": "1Delicate1 1depraedor1 dedecor doloribus arx ipsa aufero suppono dolores arcus.",
+      "margin":1992,
       "disadvantage": "Desolo tactus ultra careo expedita trepide.",
       "notes": "Vomica acquiro fugiat debilito communis beatae deludo baiulus vomito vicissitudo. Delectatio virtus valeo celer viduo coepi abundans enim. Labore cito totus terreo comptus advoco tyrannus.",
       "feedback": "Provident caterva natus centum sub."
     }
 
 ### DELETE
-DELETE {{BASE_URL}}/journal/32
+DELETE {{BASE_URL}}/journal/16
 Content-Type: application/json
 Authorization: Bearer {{Token}}
+
+### GET
+GET {{BASE_URL}}/dashboard/pnl
+Authorization: Bearer {{Token}}
+### GET
+GET {{BASE_URL}}/dashboard/winrate
+Authorization: Bearer {{Token}}
+
+### GET
+GET {{BASE_URL}}/dashboard/riskreward
+Authorization: Bearer {{Token}}
+
+###
+PATCH {{BASE_URL}}/journal/5
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{"winLose":"WIN"}

@@ -17,7 +17,7 @@ export const patchMe: RequestHandler = async (req, res, next) => {
       if (!userFound) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const updatedUser = await updateUser(userId,req.body)
+    const updatedUser = await updateUser(userId!,req.body)
   res.json({message: "Update successfully"});
 };
 
@@ -26,7 +26,7 @@ export const deleteMe: RequestHandler = async (req, res, next) => {
     const userFound = getUserBy("userId",userId)
       if (!userFound) {
       return res.status(401).json({ message: "Unauthorized" });
-    } await deleteUser(userId)
+    } await deleteUser(userId!)
   console.log("in get me page", req.user);
   res.json({message:`Delete successfully ${req.user?.username} got deleted`});
 };

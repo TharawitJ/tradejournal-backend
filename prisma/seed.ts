@@ -1,18 +1,18 @@
 import { SetUpTier, WinLoseType } from '@prisma/client';
-import bcrypt from 'bcrypt'
-import {prisma} from '../src/libs/prisma' 
+import { prisma } from '../src/libs/prisma';
 import { faker } from '@faker-js/faker';
-// const hashPassword = bcrypt.hash(faker.internet.password(),8)
+
 async function main() {
   console.log('Clearing existing data...');
   // Delete in order to avoid foreign key constraints
   await prisma.journalRecord.deleteMany();
   await prisma.entryModel.deleteMany();
+  await prisma.fundHistory.deleteMany();
   await prisma.asset.deleteMany();
   await prisma.user.deleteMany();
-  
+
   console.log('Seeding assets...');
-  const assets = ['BTC/USD', 'ETH/USD', 'EUR/USD', 'GBP/USD', 'XAU/USD', 'NAS100', 'US30'];
+  const assets = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT'];
   const createdAssets = await Promise.all(
     assets.map((assetName) =>
       prisma.asset.create({
@@ -28,11 +28,10 @@ async function main() {
         data: {
           username: faker.internet.username(),
           email: faker.internet.email(),
-          // Just test no hashed.
-          hashPassword: faker.internet.password(), 
-          startFund: parseFloat(faker.finance.amount({ min: 1000, max: 100000 })),
-          yourModel: faker.lorem.word(),
-          addFund: parseFloat(faker.finance.amount({ min: 0, max: 10000 })),
+          hashPassword: faker.internet.password(), // Just test no hashed for seed.
+          startFund: null,
+          yourModel: null,
+          addFund: null,
         },
       })
     )
@@ -40,7 +39,6 @@ async function main() {
 
   console.log('Seeding entry models and journals...');
   const tiers: SetUpTier[] = ['A', 'B', 'C', 'D', 'E', 'F'];
-  const winLose: WinLoseType[] = ['WIN', 'LOSE'];
 
   for (const user of users) {
     // Create 3 entry models per user
@@ -55,36 +53,46 @@ async function main() {
       )
     );
 
-    // Create 10 journal records per user
-    for (let i = 0; i < 10; i++) {
+    // Create 5 journal records per user
+    for (let i = 0; i < 5; i++) {
       const asset = faker.helpers.arrayElement(createdAssets);
       const entryModel = faker.helpers.arrayElement(entryModels);
       const entryPrice = parseFloat(faker.finance.amount({ min: 1, max: 50000 }));
-      const isWin = faker.helpers.arrayElement(winLose);
-      
+
       await prisma.journalRecord.create({
         data: {
           userId: user.userId,
           assetId: asset.assetId,
           entryModelId: entryModel.id,
           setUpTier: faker.helpers.arrayElement(tiers),
-          entryDateTime: faker.date.past(),
-          exitDateTime: faker.date.recent(),
           entryPrice: entryPrice,
           SL: entryPrice * 0.99,
           TP: entryPrice * 1.05,
-          advantage: faker.lorem.sentence(),
-          disadvantage: faker.lorem.sentence(),
-          notes: faker.lorem.paragraph(),
-          feedback: faker.lorem.sentence(),
-          imageUrl: faker.image.url(),
-          winLose: isWin,
-          profit: isWin === 'WIN' ? parseFloat(faker.finance.amount({ min: 10, max: 1000 })) : -parseFloat(faker.finance.amount({ min: 10, max: 500 })),
-          currentBalance: parseFloat(faker.finance.amount({ min: 1000, max: 110000 })),
-          duration: faker.number.int({ min: 1, max: 1440 }), // duration in minutes
+          margin: parseFloat(faker.finance.amount({ min: 10, max: 1000 })),
+          riskPerTrade: parseFloat(faker.finance.amount({ min: 1, max: 100 })),
+          // Optional fields set to null as per instruction
+          // has default now() in schema, but can be null if needed? Wait, @default(now()) means it will be now() if not provided.
+          exitDateTime: null,
+          advantage: null,
+          disadvantage: null,
+          notes: null,
+          feedback: null,
+          imageUrl: null,
+          winLose: null,
+          profit: null,
+          currentBalance: null,
+          duration: null,
+          positionPnL: null,
         },
       });
     }
+    
+    // Seed some FundHistory
+    await prisma.fundHistory.create({
+      data: {
+        userUserId: user.userId,
+      },
+    });
   }
 
   console.log('Seeding completed successfully.');
