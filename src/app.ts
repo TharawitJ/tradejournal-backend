@@ -3,7 +3,7 @@ import authRouter from "./routes/auth.route"
 import userRouter from "./routes/user.route"
 import journalRouter from "./routes/journal.route"
 import dashboardRouter from "./routes/dashboard.route"
-// import {errorMiddleWare} from "./middlewares/error.middleware.js"
+import {errorMiddleWare} from "./middlewares/error.middleware.js"
 // import {notFoundError} from "./middlewares/notFound.middleware.js"
 import cors from "cors"
 
@@ -17,7 +17,7 @@ app.use("/journal",journalRouter)
 app.use("/dashboard",dashboardRouter)
 
 
-// app.use(errorMiddleWare)
+app.use(errorMiddleWare)
 
 // app.use(notFoundError)
 
