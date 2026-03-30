@@ -52,7 +52,7 @@ model Asset {
   assetName      String          @unique
   journalRecords JournalRecord[]
 }
-
+// Add leverage
 model JournalRecord {
   recordId       Int          @id @default(autoincrement())
   userId         Int
@@ -81,6 +81,9 @@ model JournalRecord {
   riskPerTrade   Float
   side           side
 }
+// if win = margin * leverage * TP
+// if lose = margin * leverage * SL
+// if open = pass
 
 enum side {
   LONG

@@ -46,7 +46,7 @@ async function main() {
       assetId: assets[0].assetId,
       entryModelId: entryModel.id,
       setUpTier: SetUpTier.A,
-      side: side.long,
+      side: side.LONG,
       entryPrice: 50000,
       SL: 49500,
       TP: 51000,

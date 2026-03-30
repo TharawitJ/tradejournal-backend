@@ -1,14 +1,12 @@
 @BASE_URL=http://localhost:3500
-@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzc0ODI1MDQ1LCJleHAiOjE3NzQ5MTE0NDV9.TCjSd1uWY6B7xHP7v-1oLOBluKweGUT4SUZtIOA6oec
+@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzc0ODQzOTIzLCJleHAiOjE3NzQ5MzAzMjN9.sH3J-zBYiQdoXihcaK9qo589ruUbPaUOm7O5Ydh2p7A
 
-###
-GET {{BASE_URL}}
 ### Login
 POST {{BASE_URL}}/login
 Content-Type: application/json
 
 {
-    "identity": "test1@example.com",
+    "identity": "test@example.com",
     "password": "hashedpassword"
 }
 
@@ -23,11 +21,11 @@ Content-Type: application/json
     "passwordConfirm":"te225511"
 }
 
-### GET
+### GET user/profile
 GET {{BASE_URL}}/user/profile
 Authorization: Bearer {{Token}}
 
-### PATCH
+### PATCH user/profile
 PATCH {{BASE_URL}}/user/profile
 Content-Type: application/json
 Authorization: Bearer {{Token}}
@@ -35,12 +33,12 @@ Authorization: Bearer {{Token}}
 {"email":"user_patch@yahoo.com"}
 
 
-### DELETE
+### DELETE user/profile
 DELETE {{BASE_URL}}/user/profile
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
-{"userId":1}
+{"userId":2}
 
 ### GET journal
 GET {{BASE_URL}}/journal
@@ -53,77 +51,70 @@ POST {{BASE_URL}}/journal
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
-{     "userId":5,
-      "assetId": 7,
-      "entryModelId": 5,
+{     "userId":2,
+      "assetId": 5,
+      "entryModelId": 2,
       "setUpTier": "A",
-      "entryPrice": 42129.75,
+      "entryPrice": 43729.75,
       "margin": 123,
-      "SL": 41718.4525,
+      "SL": 43718.4525,
       "TP": 44186.2375,
       "advantage": "Delicate depraedor dedecor doloribus arx ipsa aufero suppono dolores arcus.",
       "disadvantage": "Desolo tactus ultra careo expedita trepide.",
       "notes": "Vomica acquiro fugiat debilito communis beatae deludo baiulus vomito vicissitudo. Delectatio virtus valeo celer viduo coepi abundans enim. Labore cito totus terreo comptus advoco tyrannus.",
       "feedback": "Provident caterva natus centum sub.",
       "riskPerTrade":12,
-      "side":"long"
+      "side":"LONG"
     }
 
-### PATCH
-PATCH {{BASE_URL}}/journal/17
+### PATCH journal/:journalId
+PATCH {{BASE_URL}}/journal/1
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
     {
       "entryModelId": 2,
       "setUpTier": "A",
-      "entryPrice": 42129.75,
+      "entryPrice": 4567.78,
       "SL": 5555.4525,
       "TP": 4555.2375,
-      "advantage": "1Delicate1 1depraedor1 dedecor doloribus arx ipsa aufero suppono dolores arcus.",
+      "advantage": "1112221Delicate1 1depraedor1 dedecor doloribus arx ipsa aufero suppono dolores arcus.",
       "margin":1992,
-      "disadvantage": "Desolo tactus ultra careo expedita trepide.",
+      "disadvantage": "11121Desolo tactus ultra careo expedita trepide.",
       "notes": "Vomica acquiro fugiat debilito communis beatae deludo baiulus vomito vicissitudo. Delectatio virtus valeo celer viduo coepi abundans enim. Labore cito totus terreo comptus advoco tyrannus.",
       "feedback": "Provident caterva natus centum sub."
     }
 
-### DELETE
-DELETE {{BASE_URL}}/journal/16
+### DELETE journal/:journalId
+DELETE {{BASE_URL}}/journal/1
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
-### GET
+### GET /dashboard/pnl
 GET {{BASE_URL}}/dashboard/pnl
 Authorization: Bearer {{Token}}
-### GET
+### GET /dashboard/winrate
 GET {{BASE_URL}}/dashboard/winrate
 Authorization: Bearer {{Token}}
 
-### GET
+### GET /dashboard/riskreward
 GET {{BASE_URL}}/dashboard/riskreward
 Authorization: Bearer {{Token}}
 
-###
-PATCH {{BASE_URL}}/journal/5
-Content-Type: application/json
-Authorization: Bearer {{Token}}
-
-{"winLose":"WIN"}
-
-###
+### GET usermodel
 GET {{BASE_URL}}/usermodel
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
-### POST
+### POST usermodel
 POST {{BASE_URL}}/usermodel
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
 {"name":"22222s",
-"userId":5}
+"userId":2}
 
-### DELETE
-DELETE  {{BASE_URL}}/usermodel/16
+### DELETE usermodel/:usermodelId
+DELETE  {{BASE_URL}}/usermodel/6
 Content-Type: application/json
 Authorization: Bearer {{Token}}
