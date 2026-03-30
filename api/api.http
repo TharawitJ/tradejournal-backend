@@ -1,5 +1,5 @@
 @BASE_URL=http://localhost:3500
-@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc0NjQwNzk4LCJleHAiOjE3NzQ3MjcxOTh9.vk88E_ylhBAuOIgJWaPc9R8V1q6qW9JW4QOL9Rm9zww
+@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzc0ODI1MDQ1LCJleHAiOjE3NzQ5MTE0NDV9.TCjSd1uWY6B7xHP7v-1oLOBluKweGUT4SUZtIOA6oec
 
 ###
 GET {{BASE_URL}}
@@ -8,8 +8,8 @@ POST {{BASE_URL}}/login
 Content-Type: application/json
 
 {
-    "identity": "Melvin_Walter16@gmail.com",
-    "password": "UtPFgksyi84MO4l"
+    "identity": "test1@example.com",
+    "password": "hashedpassword"
 }
 
 ### Register
@@ -40,7 +40,7 @@ DELETE {{BASE_URL}}/user/profile
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
-{"email":"New2_Dianne_Orn98@yahoo.com"}
+{"userId":1}
 
 ### GET journal
 GET {{BASE_URL}}/journal
@@ -53,10 +53,9 @@ POST {{BASE_URL}}/journal
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
-{
-      "userId": 1,
-      "assetId": 2,
-      "entryModelId": 3,
+{     "userId":5,
+      "assetId": 7,
+      "entryModelId": 5,
       "setUpTier": "A",
       "entryPrice": 42129.75,
       "margin": 123,
@@ -66,7 +65,8 @@ Authorization: Bearer {{Token}}
       "disadvantage": "Desolo tactus ultra careo expedita trepide.",
       "notes": "Vomica acquiro fugiat debilito communis beatae deludo baiulus vomito vicissitudo. Delectatio virtus valeo celer viduo coepi abundans enim. Labore cito totus terreo comptus advoco tyrannus.",
       "feedback": "Provident caterva natus centum sub.",
-      "riskPerTrade":12
+      "riskPerTrade":12,
+      "side":"long"
     }
 
 ### PATCH
@@ -109,3 +109,21 @@ Content-Type: application/json
 Authorization: Bearer {{Token}}
 
 {"winLose":"WIN"}
+
+###
+GET {{BASE_URL}}/usermodel
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+### POST
+POST {{BASE_URL}}/usermodel
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{"name":"22222s",
+"userId":5}
+
+### DELETE
+DELETE  {{BASE_URL}}/usermodel/16
+Content-Type: application/json
+Authorization: Bearer {{Token}}

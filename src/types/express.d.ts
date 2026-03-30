@@ -15,7 +15,7 @@ interface User {
 interface FundHistory {
   id: number;
   date: Date;
-  userUserId: number;
+  userId: number;
 }
 
 interface EntryModel {

@@ -15,11 +15,10 @@ export const getUserJournal: RequestHandler = async (req, res, next) => {
     return res.json({ message: "No Journal recorded" });
   }
   res.json({ journalFound });
-  return journalFound;
 };
 
 export const recordTheJournal: RequestHandler = async (req, res, next) => {
-  createJournal(req.body);
+  await createJournal(req.body);
   res.json({ message: "Record Successfully", "Record Detail": req.body });
 };
 

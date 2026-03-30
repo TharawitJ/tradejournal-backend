@@ -10,7 +10,7 @@ import { createUser, getUserBy } from "../services/user.service";
 export const register: RequestHandler = async (req, res, next) => {
   // parseAsync --> key function in Zod and Valibot
   const data = await registerSchema.parseAsync(req.body);
-  // check identity is email and mobile
+  // check identity is email and username
   // find user duplicate
   const foundUserbyEmail = await getUserBy("email", data.email);
     const foundUserbyUsername = await getUserBy("username", data.username);

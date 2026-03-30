@@ -41,9 +41,9 @@ export const loginSchema = z
   .object({
     identity: z
       .string()
-      .min(2, "Email or mobile are require to login")
+      .min(2, "Email or Username are require to login")
       .refine((val: any) => emailRegex.test(val) || usernameRegex.test(val), {
-        message: "Invalid email or mobile",
+        message: "Invalid email or Username",
       }),
     password: z.string().min(4, "Password must be at least 4 characters"),
   })

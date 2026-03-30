@@ -26,11 +26,12 @@ model User {
 }
 
 model FundHistory {
-  id         Int      @id @default(autoincrement())
-  date       DateTime @default(now())
-  amouth     Float?
-  user       User?    @relation(fields: [userUserId], references: [userId])
-  userUserId Int?
+  id     Int      @id @default(autoincrement())
+  date   DateTime @default(now())
+  amouth Float?
+
+  User       User? @relation(fields: [userId], references: [userId])
+  userId Int?
 }
 
 model EntryModel {
@@ -78,6 +79,12 @@ model JournalRecord {
   margin         Float
   positionPnL    Float?
   riskPerTrade   Float
+  side           side
+}
+
+enum side {
+  LONG
+  SHORT
 }
 
 enum SetUpTier {
@@ -92,4 +99,5 @@ enum SetUpTier {
 enum WinLoseType {
   WIN
   LOSE
+  OPEN
 }

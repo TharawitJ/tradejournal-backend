@@ -1,99 +1,67 @@
-import { SetUpTier, WinLoseType } from '@prisma/client';
 import { prisma } from '../src/libs/prisma';
-import { faker } from '@faker-js/faker';
+import { SetUpTier, WinLoseType, side } from '@prisma/client';
 
 async function main() {
-  console.log('Clearing existing data...');
-  // Delete in order to avoid foreign key constraints
+  console.log('Cleaning database...');
   await prisma.journalRecord.deleteMany();
-  await prisma.entryModel.deleteMany();
   await prisma.fundHistory.deleteMany();
+  await prisma.entryModel.deleteMany();
   await prisma.asset.deleteMany();
   await prisma.user.deleteMany();
 
-  console.log('Seeding assets...');
-  const assets = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT'];
-  const createdAssets = await Promise.all(
-    assets.map((assetName) =>
-      prisma.asset.create({
-        data: { assetName },
-      })
-    )
-  );
+  console.log('Seeding necessary data...');
 
-  console.log('Seeding users...');
-  const users = await Promise.all(
-    Array.from({ length: 3 }).map(() =>
-      prisma.user.create({
-        data: {
-          username: faker.internet.username(),
-          email: faker.internet.email(),
-          hashPassword: faker.internet.password(), // Just test no hashed for seed.
-          startFund: null,
-          yourModel: null,
-          addFund: null,
-        },
-      })
-    )
-  );
+  // 1. Create a default user
+  const user = await prisma.user.create({
+    data: {
+      username: 'testuser',
+      email: 'test@example.com',
+      hashPassword: 'hashedpassword', // Replace with real hash in production
+      startFund: 1000,
+      yourModel: 'ICT',
+    },
+  });
 
-  console.log('Seeding entry models and journals...');
-  const tiers: SetUpTier[] = ['A', 'B', 'C', 'D', 'E', 'F'];
+  // 2. Create some assets
+  const assets = await Promise.all([
+    prisma.asset.create({ data: { assetName: 'BTCUSDT' } }),
+    prisma.asset.create({ data: { assetName: 'ETHUSDT' } }),
+    prisma.asset.create({ data: { assetName: 'SOLUSDT' } }),
+  ]);
 
-  for (const user of users) {
-    // Create 3 entry models per user
-    const entryModels = await Promise.all(
-      Array.from({ length: 3 }).map((_, i) =>
-        prisma.entryModel.create({
-          data: {
-            name: `Strategy ${faker.string.alphanumeric(5)} ${i}`,
-            userId: user.userId,
-          },
-        })
-      )
-    );
+  // 3. Create entry models for the user
+  const entryModel = await prisma.entryModel.create({
+    data: {
+      name: 'FVG Entry',
+      userId: user.userId,
+    },
+  });
 
-    // Create 5 journal records per user
-    for (let i = 0; i < 5; i++) {
-      const asset = faker.helpers.arrayElement(createdAssets);
-      const entryModel = faker.helpers.arrayElement(entryModels);
-      const entryPrice = parseFloat(faker.finance.amount({ min: 1, max: 50000 }));
+  // 4. Create a sample journal record
+  await prisma.journalRecord.create({
+    data: {
+      userId: user.userId,
+      assetId: assets[0].assetId,
+      entryModelId: entryModel.id,
+      setUpTier: SetUpTier.A,
+      side: side.long,
+      entryPrice: 50000,
+      SL: 49500,
+      TP: 51000,
+      margin: 100,
+      riskPerTrade: 20,
+      winLose: WinLoseType.OPEN,
+      notes: 'Initial seed entry',
+    },
+  });
 
-      await prisma.journalRecord.create({
-        data: {
-          userId: user.userId,
-          assetId: asset.assetId,
-          entryModelId: entryModel.id,
-          setUpTier: faker.helpers.arrayElement(tiers),
-          entryPrice: entryPrice,
-          SL: entryPrice * 0.99,
-          TP: entryPrice * 1.05,
-          margin: parseFloat(faker.finance.amount({ min: 10, max: 1000 })),
-          riskPerTrade: parseFloat(faker.finance.amount({ min: 1, max: 100 })),
-          // Optional fields set to null as per instruction
-          // has default now() in schema, but can be null if needed? Wait, @default(now()) means it will be now() if not provided.
-          exitDateTime: null,
-          advantage: null,
-          disadvantage: null,
-          notes: null,
-          feedback: null,
-          imageUrl: null,
-          winLose: null,
-          profit: null,
-          currentBalance: null,
-          duration: null,
-          positionPnL: null,
-        },
-      });
-    }
-    
-    // Seed some FundHistory
-    await prisma.fundHistory.create({
-      data: {
-        userUserId: user.userId,
-      },
-    });
-  }
+  // 5. Create fund history
+  await prisma.fundHistory.create({
+    data: {
+      userId: user.userId,
+      amouth: 1000,
+    },
+  });
 
   console.log('Seeding completed successfully.');
 }

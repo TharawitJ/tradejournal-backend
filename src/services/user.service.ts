@@ -9,7 +9,7 @@ export async function createUser(data: any) {
   return await prisma.user.create({ data: data });
 }
 
-export async function updateUser(userId:number, data:any) {
+export async function updateUser(userId: number, data: any) {
   const updatedUser = await prisma.user.update({
     where: { userId: userId },
     data: {
@@ -20,9 +20,19 @@ export async function updateUser(userId:number, data:any) {
   return updatedUser;
 }
 
-export async function deleteUser(userId:number) {
-  const deletedUser = await prisma.user.delete({
-    where: { userId: userId },
-  });
-  return deletedUser;
+export async function deleteUser(userId: number) {
+  return prisma.$transaction([
+    prisma.journalRecord.deleteMany({
+      where: { userId: userId },
+    }),
+    prisma.fundHistory.deleteMany({
+      where: { userId: userId },
+    }),
+    prisma.entryModel.deleteMany({
+      where: { userId: userId },
+    }),
+    prisma.user.delete({
+      where: { userId: userId },
+    }),
+  ]);
 }
