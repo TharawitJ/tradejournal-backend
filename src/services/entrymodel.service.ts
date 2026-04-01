@@ -9,7 +9,7 @@ export async function createNewModel(data: any) {
 
     return await prisma.entryModel.create({
       data: {
-        name: data.name,
+        modelName: data.name,
         userId: data.userId,
       },
     });
@@ -20,7 +20,7 @@ export async function deleteModelById(modelId:number){
       try {
     return await prisma.entryModel.delete({
       where: {
-        id: modelId
+        modelId: modelId
       },
     });
   } catch (err: any) {

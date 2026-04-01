@@ -1,13 +1,13 @@
 @BASE_URL=http://localhost:3500
-@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzc0ODQzOTIzLCJleHAiOjE3NzQ5MzAzMjN9.sH3J-zBYiQdoXihcaK9qo589ruUbPaUOm7O5Ydh2p7A
+@Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzc0OTQ5NDk2LCJleHAiOjE3NzUwMzU4OTZ9.mU5UfTXLt583xASoAk91uT0hE5_HVC1tj4g0NiK8Qys
 
 ### Login
 POST {{BASE_URL}}/login
 Content-Type: application/json
 
 {
-    "identity": "test@example.com",
-    "password": "hashedpassword"
+    "identity": "testuser",
+    "password": "123456"
 }
 
 ### Register
@@ -111,10 +111,18 @@ POST {{BASE_URL}}/usermodel
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
-{"name":"22222s",
-"userId":2}
+{"modelName":"22222s",
+"userId":4}
 
 ### DELETE usermodel/:usermodelId
-DELETE  {{BASE_URL}}/usermodel/6
+DELETE  {{BASE_URL}}/usermodel/1
 Content-Type: application/json
 Authorization: Bearer {{Token}}
+
+
+### GET Fund
+GET {{BASE_URL}}/fundhistory/1
+Authorization: Bearer {{Token}}
+
+### GET asset
+GET {{BASE_URL}}/asset

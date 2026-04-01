@@ -13,16 +13,17 @@ export const register: RequestHandler = async (req, res, next) => {
   // check identity is email and username
   // find user duplicate
   const foundUserbyEmail = await getUserBy("email", data.email);
-    const foundUserbyUsername = await getUserBy("username", data.username);
+  const foundUserbyUsername = await getUserBy("username", data.username);
   if (foundUserbyEmail || foundUserbyUsername) {
     return next(createHttpError[409]("This user already register"));
   }
   // create new user
-  console.log(data.password)
-  const userHashPW = {username:data.username,
-    email:data.email,
-    hashPassword:data.password,
-  }
+  console.log(data.password);
+  const userHashPW = {
+    username: data.username,
+    email: data.email,
+    hashPassword: data.password,
+  };
   const newUser = await createUser(userHashPW);
 
   //   if error data.identity has been strip by zod
@@ -36,19 +37,24 @@ export const register: RequestHandler = async (req, res, next) => {
 
 export const login: RequestHandler = async (req, res, next) => {
   const data = loginSchema.parse(req.body);
-  const identityKey = data.email? "email" : "username";
+  const identityKey = data.email ? "email" : "username";
   // find login user
-  const foundUser = await getUserBy(identityKey, data[identityKey as keyof typeof data]);
+  const foundUser = await getUserBy(
+    identityKey,
+    data[identityKey as keyof typeof data],
+  );
   if (!foundUser) {
     return next(createHttpError[401]("Invalid user login 1"));
   }
-  // test check password
-  if (data.password !== foundUser.hashPassword) {
-    ;     return next(createHttpError[401]("Invalid user login 2"))
-  }
   // check password
-  // let pwCheck = await bcrypt.compare(data.password, foundUser.hashPassword)
-  // if (!pwCheck){    return next(createHttpError[401]("Invalid user login 2"))}
+  console.log(data.password)
+  console.log(foundUser.hashPassword)
+  let pwCheck = await bcrypt.compare(data.password, foundUser.hashPassword);
+  console.log(pwCheck)
+  if (!pwCheck) {
+    return next(createHttpError[401]("Invalid user login 2"));
+  }
+
   // create token
   const payload = { id: foundUser.userId };
   const token = jwt.sign(payload, process.env.JWT_SECRET!, {
@@ -63,5 +69,3 @@ export const login: RequestHandler = async (req, res, next) => {
     user: userData,
   });
 };
-
-

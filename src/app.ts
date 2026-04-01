@@ -3,6 +3,8 @@ import authRouter from "./routes/auth.route"
 import userRouter from "./routes/user.route"
 import journalRouter from "./routes/journal.route"
 import dashboardRouter from "./routes/dashboard.route"
+import fundhistoryRouter from "./routes/fundhistory.route"
+import assetRouter from "./routes/asset.route"
 import userModel from "./routes/entrymodel.route"
 import {errorMiddleWare} from "./middlewares/error.middleware.js"
 // import {notFoundError} from "./middlewares/notFound.middleware.js"
@@ -24,7 +26,8 @@ app.use("/user",userRouter)
 app.use("/usermodel",userModel)
 app.use("/journal",journalRouter)
 app.use("/dashboard",dashboardRouter)
-
+app.use("/fundhistory",fundhistoryRouter)
+app.use("/asset",assetRouter)
 
 app.use(errorMiddleWare)
 

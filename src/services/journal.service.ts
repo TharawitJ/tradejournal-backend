@@ -1,4 +1,11 @@
 import { prisma } from "../libs/prisma";
+import { SetUpTier } from "@prisma/client";
+
+export const getSetUpTier = () => {
+  const setUpTier = (Object.values(SetUpTier));
+  return setUpTier
+};
+
 
 export async function getJournalById(field:string,id: number) {
   const data = await prisma.journalRecord.findMany({

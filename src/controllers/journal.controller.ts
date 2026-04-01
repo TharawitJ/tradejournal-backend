@@ -3,18 +3,20 @@ import {
   getJournalById,
   createJournal,
   editRecord,
-  deleteRecord,
+  deleteRecord,getSetUpTier
 } from "../services/journal.service";
 import createHttpError from "http-errors";
+
 
 export const getUserJournal: RequestHandler = async (req, res, next) => {
   const id = req.user?.userId; // cosnt {userId = req.user}
   const field = "userId";
+  const setUpTier = getSetUpTier()
   const journalFound = await getJournalById(field, id!);
   if (!journalFound) {
     return res.json({ message: "No Journal recorded" });
   }
-  res.json({ journalFound });
+  res.json({ journalFound, setUpTier});
 };
 
 export const recordTheJournal: RequestHandler = async (req, res, next) => {

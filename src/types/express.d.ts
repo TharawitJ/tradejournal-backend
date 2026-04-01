@@ -2,25 +2,25 @@ import { WinLoseType, SetUpTier } from "@prisma/client";
 
 interface User {
   userId: number;
-  username: string | null;
-  email: string | null;
-  hashPassword?: string | null;
-  startFund: number;
-  yourModel: string;
-  addFund: number;
+  username: string;
+  email: string;
+  hashPassword?: string;
+  startFund: number | null;
+  addFund: number | null;
   journalRecords?: JournalRecord[];
   entryModels?: EntryModel[];
   fundHistory?: FundHistory[];
 }
 interface FundHistory {
-  id: number;
+  fundId: number;
   date: Date;
   userId: number;
+  amouth: number;
 }
 
 interface EntryModel {
-  id: number;
-  name: string;
+  modelId: number;
+  modelName: string;
   userId: number;
   journals: JournalRecord[];
 }
@@ -42,18 +42,19 @@ interface JournalRecord {
   entryPrice: number;
   SL: number;
   TP: number;
-  advantage?: string;
-  disadvantage?: string;
-  notes?: string;
-  feedback?: string;
-  imageUrl?: string;
-  winLose?: WinLoseType;
-  profitPosition?: number;
+  advantage?: string | null;
+  disadvantage?: string | null;
+  notes?: string | null;
+  feedback?: string | null;
+  imageUrl?: string | null;
+  winLose?: WinLoseType | "OPEN";
+  profitPosition?: number | null;
   currentBalance: number;
-  duration?: number;
+  duration?: number | null;
   margin: number;
   riskPerTrade: number;
-  leverage:number;
+  leverage: number;
+  side: string;
 }
 
 declare global {

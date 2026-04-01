@@ -18,7 +18,7 @@ model User {
   email          String          @unique
   hashPassword   String
   startFund      Float?
-  yourModel      String?
+  // yourModel      String?
   addFund        Float?
   journalRecords JournalRecord[]
   entryModels    EntryModel[]
@@ -26,22 +26,21 @@ model User {
 }
 
 model FundHistory {
-  id     Int      @id @default(autoincrement())
+  fundId     Int      @id @default(autoincrement())
   date   DateTime @default(now())
   amouth Float?
-
   User       User? @relation(fields: [userId], references: [userId])
   userId Int?
 }
 
 model EntryModel {
-  id       Int             @id @default(autoincrement())
-  name     String
+  modelId       Int             @id @default(autoincrement())
+  modelName     String
   userId   Int
   user     User            @relation(fields: [userId], references: [userId])
   journals JournalRecord[]
 
-  @@unique([name, userId])
+  @@unique([modelName, userId])
 }
 
 // use entryId as a model represent
@@ -56,11 +55,13 @@ model Asset {
 model JournalRecord {
   recordId       Int          @id @default(autoincrement())
   userId         Int
-  assetId        Int
+  entryAssetId        Int
+  entryAssetName     String
   entryModelId   Int
+  entryModelName String
   user           User         @relation(fields: [userId], references: [userId])
-  asset          Asset        @relation(fields: [assetId], references: [assetId])
-  entryModel     EntryModel   @relation(fields: [entryModelId], references: [id])
+  asset          Asset        @relation(fields: [entryAssetId], references: [assetId])
+  entryModel     EntryModel   @relation(fields: [entryModelId], references: [modelId])
   setUpTier      SetUpTier
   entryDateTime  DateTime?    @default(now())
   exitDateTime   DateTime?
@@ -79,13 +80,14 @@ model JournalRecord {
   margin         Float
   positionPnL    Float?
   riskPerTrade   Float
-  side           side
+  side           PositionSide
+  leverage       Int
 }
 // if win = margin * leverage * TP
 // if lose = margin * leverage * SL
 // if open = pass
 
-enum side {
+enum PositionSide {
   LONG
   SHORT
 }
