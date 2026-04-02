@@ -1,6 +1,6 @@
 import { ZodError,z } from "zod";
 import type { ErrorRequestHandler } from "express";
-
+// explain
 export const errorMiddleWare: ErrorRequestHandler = (err, req, res, next) => {
   if (err.name === "TokenExpiredError") {
     return res.status(401).json({
@@ -14,7 +14,9 @@ export const errorMiddleWare: ErrorRequestHandler = (err, req, res, next) => {
       message: "The provided token is invalid or malformed.",
     });
   }
+  // if the error was thrown by a Zod validation check
   if (err instanceof ZodError) {
+    // tree-if-y-error --> help to map the error message.
     const errors = z.treeifyError(err);
     return res.status(400).json({
       success: false,
@@ -22,7 +24,13 @@ export const errorMiddleWare: ErrorRequestHandler = (err, req, res, next) => {
       // errors: err.issues.map(err => err.message)
     });
   }
-  console.error(err);
+    // if (err instanceof ZodError) {
+    // return res.status(400).json({
+    //   success: false,
+    //   errors: err.flatten().fieldErrors
+    //   // errors: err.issues.map(err => err.message)
+    // })
+  // console.error(err);
   res.status(err.status || 500);
   res.json({
     status: err.status || 500,

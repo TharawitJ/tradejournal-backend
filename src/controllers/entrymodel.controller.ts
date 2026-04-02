@@ -10,7 +10,7 @@ export const getUserModel: RequestHandler = async (req, res, next) => {
   const userId = req.user?.userId;
   const field = "userId";
   const userModel = await getModelByUserId(field, userId);
-  console.log(userModel);
+  // console.log(userModel);
   if (!userModel) {
     return res.status(401).json({ message: "Unauthorized" });
   }

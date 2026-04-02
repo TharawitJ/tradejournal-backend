@@ -3,25 +3,37 @@ import {
   getJournalById,
   createJournal,
   editRecord,
-  deleteRecord,getSetUpTier
+  deleteRecord,
+  getSetUpTier,
 } from "../services/journal.service";
 import createHttpError from "http-errors";
-
 
 export const getUserJournal: RequestHandler = async (req, res, next) => {
   const id = req.user?.userId; // cosnt {userId = req.user}
   const field = "userId";
-  const setUpTier = getSetUpTier()
+  const setUpTier = getSetUpTier();
   const journalFound = await getJournalById(field, id!);
   if (!journalFound) {
     return res.json({ message: "No Journal recorded" });
   }
-  res.json({ journalFound, setUpTier});
+  res.json({ journalFound, setUpTier });
 };
 
 export const recordTheJournal: RequestHandler = async (req, res, next) => {
-  await createJournal(req.body);
-  res.json({ message: "Record Successfully", "Record Detail": req.body });
+  try {
+    console.log(req.body)
+  const id = req.user?.userId; // cosnt {userId = req.user}
+    const addUserId = {...req.body,userId:id}
+    await createJournal(addUserId);
+    res.json({ message: "Record Successfully", "Record Detail": addUserId });
+  } catch (err) {
+    // 1. Pass the error to the next middleware (standard Express practice) next(err)
+    // 2. OR send a response immediately:
+    res.status(500).json({
+      success: false,
+      message: err instanceof Error ? err.message : "An unknown error occurred",
+    });
+  }
 };
 
 export const editTheJournal: RequestHandler = async (req, res, next) => {

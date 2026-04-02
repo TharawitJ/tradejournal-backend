@@ -16,7 +16,7 @@ export async function getJournalById(field:string,id: number) {
 
 // write userId at frontend
 export async function createJournal(data: any) {
-  return await prisma.journalRecord.create({ data: data });
+  return await prisma.journalRecord.create({ data: {...data,entryDateTime: new Date(data.entryDateTime)} });
 }
 
 export async function editRecord(recordId: number, data: any) {

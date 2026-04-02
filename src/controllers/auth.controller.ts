@@ -8,7 +8,9 @@ import { createUser, getUserBy } from "../services/user.service";
 //only done for test password need to be hash bcrypt
 
 export const register: RequestHandler = async (req, res, next) => {
-  // parseAsync --> key function in Zod and Valibot
+  // parseAsync --> Zod TypeScript Validation Library and Valibot
+  // parses unknown input against a schema and throws a ValiError if the validation fails.
+  // parseAsync explain
   const data = await registerSchema.parseAsync(req.body);
   // check identity is email and username
   // find user duplicate
@@ -18,7 +20,7 @@ export const register: RequestHandler = async (req, res, next) => {
     return next(createHttpError[409]("This user already register"));
   }
   // create new user
-  console.log(data.password);
+  // console.log(data.password);
   const userHashPW = {
     username: data.username,
     email: data.email,
@@ -26,7 +28,7 @@ export const register: RequestHandler = async (req, res, next) => {
   };
   const newUser = await createUser(userHashPW);
 
-  //   if error data.identity has been strip by zod
+  //   if data.identity has been strip by zod
   const userData = {
     id: newUser.userId,
     email: data.email,
@@ -47,8 +49,8 @@ export const login: RequestHandler = async (req, res, next) => {
     return next(createHttpError[401]("Invalid user login 1"));
   }
   // check password
-  console.log(data.password)
-  console.log(foundUser.hashPassword)
+  // console.log(data.password)
+  // console.log(foundUser.hashPassword)
   let pwCheck = await bcrypt.compare(data.password, foundUser.hashPassword);
   console.log(pwCheck)
   if (!pwCheck) {
