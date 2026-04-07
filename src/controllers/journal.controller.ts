@@ -21,7 +21,7 @@ export const getUserJournal: RequestHandler = async (req, res, next) => {
 
 export const recordTheJournal: RequestHandler = async (req, res, next) => {
   try {
-    console.log(req.body)
+    // console.log(req.body)
   const id = req.user?.userId; // cosnt {userId = req.user}
     const addUserId = {...req.body,userId:id}
     await createJournal(addUserId);

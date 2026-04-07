@@ -74,11 +74,10 @@ model JournalRecord {
   feedback       String?
   imageUrl       String?
   winLose        WinLoseType?
-  profit         Float?
   currentBalance Float?
   duration       Int?
   margin         Float
-  positionPnL    Float?
+  positionPnL    Float @default(0)
   riskPerTrade   Float
   side           PositionSide
   leverage       Int
